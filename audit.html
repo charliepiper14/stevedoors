@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Ads Performance Audit - Mobile Security Doors</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #162642 0%, #1a2d4f 100%);
+            color: white;
+            line-height: 1.6;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            page-break-after: always;
+        }
+        
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            height: 60px;
+        }
+        
+        .slide-number {
+            background: #cc5b27;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #cc5b27, #ff7c4c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #cc5b27;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #cc5b27;
+        }
+        
+        .subtitle {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #cc5b27;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #cc5b27;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #cc5b27, #ff7c4c);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #388e3c, #4caf50);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .analysis-box {
+            background: linear-gradient(135deg, #1565c0, #1976d2);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .highlight-box h3, .alert-box h3, .success-box h3, .analysis-box h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .data-table {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: #cc5b27;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9em;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .bullet-points {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .bullet-points li {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .bullet-points li:before {
+            content: "▶";
+            color: #cc5b27;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .performance-bar {
+            background: #333;
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.8s ease;
+            position: relative;
+        }
+        
+        .bar-excellent { background: linear-gradient(90deg, #4caf50, #8bc34a); width: 90%; }
+        .bar-good { background: linear-gradient(90deg, #8bc34a, #cddc39); width: 75%; }
+        .bar-fair { background: linear-gradient(90deg, #ffc107, #ff9800); width: 45%; }
+        .bar-poor { background: linear-gradient(90deg, #ff5722, #d32f2f); width: 25%; }
+        
+        .efficiency-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .efficiency-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .vs-indicator {
+            background: #cc5b27;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .waste-indicator {
+            background: #d32f2f;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        @media print {
+            .slide {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title Slide -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">01</div>
+        </div>
+        <h1>Google Ads Performance Audit</h1>
+        <div class="subtitle">Comprehensive 90-Day Account Analysis</div>
+        <div class="analysis-box">
+            <h3>📊 Multi-Timeframe Performance Analysis</h3>
+            <p>Deep analysis across 90, 60, 30, 14, and 7-day periods reveals significant performance disparities, budget allocation inefficiencies, and optimization opportunities requiring immediate strategic attention.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">$14,480</span>
+                <div class="stat-label">Total Account Spend (90d)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">417</span>
+                <div class="stat-label">Total Conversions (90d)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$34.72</span>
+                <div class="stat-label">Blended CPA (90d)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">4.2x</span>
+                <div class="stat-label">Performance Gap</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <div style="font-size: 1.2em; margin-top: 40px;">Steve's Mobile Security Doors</div>
+            <div style="opacity: 0.8; margin-top: 10px;">August 20, 2025 | Performance Period: May 22 - August 19, 2025</div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Executive Summary -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">02</div>
+        </div>
+        <h2>Executive Performance Summary</h2>
+        <div class="analysis-box">
+            <h3>📈 Key Performance Insights</h3>
+            <p>Analysis reveals dramatic performance variation between campaigns, with branded search delivering 4.2x better efficiency than security doors campaigns. Recent performance trends indicate optimization opportunities and budget reallocation needs.</p>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Performance Highlights</h3>
+                <ul class="bullet-points">
+                    <li>Branded search campaign: $10.02 CPA with outstanding efficiency</li>
+                    <li>Mobile device performance: 89.6% of branded conversions at $9.80 CPA</li>
+                    <li>Top performing location: Antioch, CA at $4.95 CPA</li>
+                    <li>Strong search term performance: "steves security doors" at $2.25 CPA</li>
+                    <li>Consistent branded performance across multiple timeframes</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Critical Issues Identified</h3>
+                <ul class="bullet-points">
+                    <li>Security doors campaign: $42.44 CPA with declining performance</li>
+                    <li>Budget allocation inverse to performance efficiency</li>
+                    <li>$409.81 in identified wasteful spending on zero-conversion terms</li>
+                    <li>Recent 7-day performance shows 65% CPA deterioration</li>
+                    <li>Campaign budget limitations affecting top performer</li>
+                </ul>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">9.98</span>
+                <div class="stat-label">Branded: Conversions per $100</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">2.36</span>
+                <div class="stat-label">Security: Conversions per $100</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">8.6x</span>
+                <div class="stat-label">Budget Misallocation Ratio</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">79%</span>
+                <div class="stat-label">Recent CPA Deterioration</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Campaign Performance Comparison -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">03</div>
+        </div>
+        <h2>Campaign Performance Analysis</h2>
+        <div class="subtitle">90-day comprehensive performance comparison</div>
+        <div class="efficiency-comparison">
+            <div class="efficiency-card">
+                <h3>Branded Search Campaign</h3>
+                <div style="font-size: 2.5em; color: #4caf50; font-weight: bold;">$10.02</div>
+                <p>Cost Per Acquisition</p>
+                <div style="margin-top: 15px; font-size: 0.9em;">95.5 conversions | $957.35 spent</div>
+            </div>
+            <div class="vs-indicator">VS</div>
+            <div class="efficiency-card">
+                <h3>Security Doors Campaign</h3>
+                <div style="font-size: 2.5em; color: #d32f2f; font-weight: bold;">$42.44</div>
+                <p>Cost Per Acquisition</p>
+                <div style="margin-top: 15px; font-size: 0.9em;">186.7 conversions | $7,922 spent</div>
+            </div>
+        </div>
+        <div class="data-table">
+            <table>
+                <tr><th>Campaign</th><th>Daily Budget</th><th>Total Spend</th><th>Conversions</th><th>CPA</th><th>Efficiency</th><th>Status</th></tr>
+                <tr><td>Branded Search</td><td>$17.50</td><td>$957.35</td><td>95.5</td><td>$10.02</td><td>Outstanding</td><td>Eligible</td></tr>
+                <tr><td>Security Doors</td><td>$150.00</td><td>$7,921.94</td><td>186.7</td><td>$42.44</td><td>Poor</td><td>Budget Limited</td></tr>
+            </table>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Branded Campaign Strengths</h3>
+                <ul class="bullet-points">
+                    <li>4.2x better cost efficiency than security campaign</li>
+                    <li>Consistent performance across all timeframes</li>
+                    <li>Strong mobile performance (89.6% conversions)</li>
+                    <li>High-intent branded traffic with excellent conversion rates</li>
+                    <li>Room for budget expansion without performance degradation</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Security Campaign Issues</h3>
+                <ul class="bullet-points">
+                    <li>Budget consuming 89.6% of total spend despite poor efficiency</li>
+                    <li>High-cost, low-conversion search terms identified</li>
+                    <li>Performance declining in recent periods</li>
+                    <li>Significant waste on zero-conversion terms</li>
+                    <li>Budget limited despite inefficient performance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Search Terms Performance Analysis -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">04</div>
+        </div>
+        <h2>Search Terms Performance Deep Dive</h2>
+        <div class="subtitle">Identifying high-performers and optimization opportunities</div>
+        <div class="two-column">
+            <div>
+                <h3>🏆 Top Performing Branded Terms</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Search Term</th><th>CPA</th><th>Conversions</th><th>Spend</th></tr>
+                        <tr><td>steve screens</td><td>$1.95</td><td>2</td><td>$3.90</td></tr>
+                        <tr><td>steves security doors</td><td>$2.25</td><td>15</td><td>$33.78</td></tr>
+                        <tr><td>steves mobile</td><td>$3.00</td><td>2</td><td>$6.01</td></tr>
+                        <tr><td>mobile screen doors</td><td>$3.85</td><td>2</td><td>$7.70</td></tr>
+                        <tr><td>steve's mobile security doors</td><td>$8.41</td><td>14</td><td>$117.73</td></tr>
+                    </table>
+                </div>
+                <div class="performance-bar">
+                    <div class="bar-fill bar-excellent"></div>
+                </div>
+                <p style="text-align: center; margin: 10px 0; font-weight: bold;">Performance: Exceptional</p>
+            </div>
+            <div>
+                <h3>⚠️ Problematic Security Terms</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Search Term</th><th>CPA</th><th>Conversions</th><th>Spend</th></tr>
+                        <tr><td>security doors</td><td>$68.20</td><td>3.33</td><td>$227.09</td></tr>
+                        <tr><td>security screen doors</td><td>$65.49</td><td>11.25</td><td>$736.75</td></tr>
+                        <tr><td>screen doors</td><td>$51.07</td><td>5</td><td>$255.36</td></tr>
+                        <tr><td>security door near me</td><td>$46.00</td><td>0.5</td><td>$23.00</td></tr>
+                        <tr><td>screen door</td><td>$29.61</td><td>10</td><td>$296.15</td></tr>
+                    </table>
+                </div>
+                <div class="performance-bar">
+                    <div class="bar-fill bar-poor"></div>
+                </div>
+                <p style="text-align: center; margin: 10px 0; font-weight: bold;">Performance: Requires Optimization</p>
+            </div>
+        </div>
+        <div class="alert-box">
+            <h3>Budget Waste Analysis</h3>
+            <div class="three-column">
+                <div>
+                    <strong>Zero-Conversion Waste:</strong><br>
+                    screen door replacement <span class="waste-indicator">$139.26</span><br>
+                    titan security doors <span class="waste-indicator">$81.78</span><br>
+                    screen door repair <span class="waste-indicator">$73.55</span>
+                </div>
+                <div>
+                    <strong>High-CPA Problem Terms:</strong><br>
+                    steel security doors residential <span class="waste-indicator">$87.12 CPA</span><br>
+                    security doors sacramento <span class="waste-indicator">$65.59 CPA</span><br>
+                    metal security screen doors <span class="waste-indicator">$48.28 CPA</span>
+                </div>
+                <div>
+                    <strong>Total Waste Identified:</strong><br>
+                    <span style="font-size: 2em; color: #fff;">$409.81</span><br>
+                    <span style="font-size: 0.9em;">5.2% of security campaign spend</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Timeframe Performance Trends -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">05</div>
+        </div>
+        <h2>Performance Trend Analysis</h2>
+        <div class="subtitle">Multi-timeframe performance evolution</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">$34.72</span>
+                <div class="stat-label">90-Day Blended CPA</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$41.01</span>
+                <div class="stat-label">14-Day Blended CPA</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$62.27</span>
+                <div class="stat-label">7-Day Blended CPA</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">79%</span>
+                <div class="stat-label">Performance Deterioration</div>
+            </div>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Branded Campaign Trends</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Period</th><th>CPA</th><th>Conversions</th><th>Daily Volume</th></tr>
+                        <tr><td>90-Day</td><td>$10.02</td><td>95.5</td><td>1.06</td></tr>
+                        <tr><td>14-Day</td><td>$10.24</td><td>14</td><td>1.00</td></tr>
+                        <tr><td>7-Day</td><td>$14.33</td><td>6</td><td>0.86</td></tr>
+                    </table>
+                </div>
+                <div class="performance-bar">
+                    <div class="bar-fill bar-good"></div>
+                </div>
+                <p style="text-align: center; margin: 10px 0;"><strong>Remains Top Performer</strong></p>
+            </div>
+            <div>
+                <h3>Security Campaign Trends</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Period</th><th>CPA</th><th>Conversions</th><th>Daily Volume</th></tr>
+                        <tr><td>90-Day</td><td>$42.44</td><td>186.7</td><td>2.07</td></tr>
+                        <tr><td>14-Day</td><td>$51.27</td><td>42</td><td>3.00</td></tr>
+                        <tr><td>7-Day</td><td>$84.40</td><td>13</td><td>1.86</td></tr>
+                    </table>
+                </div>
+                <div class="performance-bar">
+                    <div class="bar-fill bar-poor"></div>
+                </div>
+                <p style="text-align: center; margin: 10px 0;"><strong>Declining Performance</strong></p>
+            </div>
+        </div>
+        <div class="analysis-box">
+            <h3>📊 Trend Analysis Insights</h3>
+            <ul class="bullet-points">
+                <li><strong>Performance Divergence:</strong> Gap between campaigns widening in recent periods (branded maintaining efficiency while security deteriorating)</li>
+                <li><strong>Volume Consistency:</strong> Branded campaign showing stable daily conversion volume despite budget constraints</li>
+                <li><strong>Cost Escalation:</strong> Security campaign CPA increased 65% in recent 7-day period vs 14-day baseline</li>
+                <li><strong>Budget Efficiency:</strong> Branded campaign generating more consistent results per dollar invested across all timeframes</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 6: Device & Location Performance -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">06</div>
+        </div>
+        <h2>Device & Location Performance Analysis</h2>
+        <div class="subtitle">Granular performance insights for optimization</div>
+        <div class="two-column">
+            <div>
+                <h3>Device Performance Analysis</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Device</th><th>Campaign</th><th>CPA</th><th>Conversions</th><th>Performance</th></tr>
+                        <tr><td>Mobile</td><td>Branded</td><td>$9.80</td><td>86</td><td>Outstanding</td></tr>
+                        <tr><td>Computers</td><td>Branded</td><td>$22.84</td><td>8</td><td>Fair</td></tr>
+                        <tr><td>Tablets</td><td>Branded</td><td>$22.07</td><td>2</td><td>Fair</td></tr>
+                        <tr><td>Tablets</td><td>Security</td><td>$25.42</td><td>12</td><td>Best of Campaign</td></tr>
+                        <tr><td>Mobile</td><td>Security</td><td>$40.62</td><td>254.5</td><td>Poor</td></tr>
+                        <tr><td>Computers</td><td>Security</td><td>$50.79</td><td>54.5</td><td>Worst</td></tr>
+                    </table>
+                </div>
+                <div class="success-box">
+                    <h3>Mobile Performance Dominance</h3>
+                    <p>Mobile devices drive 89.6% of branded conversions at $9.80 CPA, demonstrating clear mobile optimization opportunity.</p>
+                </div>
+            </div>
+            <div>
+                <h3>Top Location Performance</h3>
+                <div class="data-table">
+                    <table>
+                        <tr><th>Location</th><th>Campaign</th><th>CPA</th><th>Conversions</th></tr>
+                        <tr><td>Antioch, CA</td><td>Branded</td><td>$4.95</td><td>14</td></tr>
+                        <tr><td>Modesto, CA</td><td>Branded</td><td>$10.77</td><td>53</td></tr>
+                        <tr><td>Sacramento, CA</td><td>Branded</td><td>$12.07</td><td>24</td></tr>
+                        <tr><td>Brentwood, CA</td><td>Security</td><td>$26.74</td><td>7</td></tr>
+                        <tr><td>Stockton, CA</td><td>Security</td><td>$30.48</td><td>20</td></tr>
+                        <tr><td>Antioch, CA</td><td>Security</td><td>$34.40</td><td>26</td></tr>
+                    </table>
+                </div>
+                <div class="highlight-box">
+                    <h3>Geographic Performance Insights</h3>
+                    <p>Antioch, CA shows exceptional branded performance ($4.95 CPA) while maintaining reasonable security performance, indicating strong local brand recognition.</p>
+                </div>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">89.6%</span>
+                <div class="stat-label">Mobile Share (Branded)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$9.80</span>
+                <div class="stat-label">Mobile CPA (Branded)</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$4.95</span>
+                <div class="stat-label">Best Location CPA</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">4.1x</span>
+                <div class="stat-label">Mobile Performance Gap</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Budget Allocation Analysis -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">07</div>
+        </div>
+        <h2>Budget Allocation Efficiency</h2>
+        <div class="subtitle">Current allocation vs performance optimization potential</div>
+        <div class="alert-box">
+            <h3>🚨 Critical Budget Misallocation Identified</h3>
+            <p>Current budget allocation is 8.6x in favor of the campaign with 4.2x worse efficiency, creating significant optimization opportunity.</p>
+        </div>
+        <div class="efficiency-comparison">
+            <div class="efficiency-card">
+                <h3>Current Allocation</h3>
+                <div style="font-size: 1.8em; color: #d32f2f;">Branded: 10.4%</div>
+                <div style="font-size: 1.8em; color: #d32f2f;">Security: 89.6%</div>
+                <p>Inverse to performance efficiency</p>
+            </div>
+            <div class="vs-indicator">VS</div>
+            <div class="efficiency-card">
+                <h3>Optimized Allocation</h3>
+                <div style="font-size: 1.8em; color: #4caf50;">Branded: 70%</div>
+                <div style="font-size: 1.8em; color: #4caf50;">Security: 30%</div>
+                <p>Aligned with performance data</p>
+            </div>
+        </div>
+        <div class="data-table">
+            <table>
+                <tr><th>Campaign</th><th>Current Budget</th><th>Efficiency Score</th><th>Recommended Budget</th><th>Potential Impact</th></tr>
+                <tr><td>Branded Search</td><td>$17.50/day</td><td>9.98 conv/$100</td><td>$117.25/day</td><td>+570% capacity</td></tr>
+                <tr><td>Security Doors</td><td>$150.00/day</td><td>2.36 conv/$100</td><td>$50.25/day</td><td>Focus on optimization</td></tr>
+            </table>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Current Budget Issues</h3>
+                <ul class="bullet-points">
+                    <li>High-performing branded campaign artificially limited at $17.50/day</li>
+                    <li>Poor-performing security campaign consuming $150/day despite inefficiency</li>
+                    <li>Budget allocation creates 8.6x disparity against performance</li>
+                    <li>$409.81 monthly waste on zero-conversion terms</li>
+                    <li>Missed opportunity for scaled efficient spending</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Optimization Opportunities</h3>
+                <ul class="bullet-points">
+                    <li>Gradual branded budget increase to test capacity limits</li>
+                    <li>Eliminate identified wasteful spending immediately</li>
+                    <li>Reallocate budget based on efficiency metrics</li>
+                    <li>Implement device-specific budget adjustments</li>
+                    <li>Geographic budget optimization based on location performance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Strategic Recommendations -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">08</div>
+        </div>
+        <h2>Strategic Optimization Plan</h2>
+        <div class="subtitle">Data-driven recommendations for performance improvement</div>
+        <div class="analysis-box">
+            <h3>📊 Strategic Framework</h3>
+            <p>Based on comprehensive data analysis, implement phased optimization approach prioritizing immediate waste elimination, gradual high-performer scaling, and systematic underperformer improvement.</p>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Phase 1: Immediate Optimizations (Week 1)</h3>
+                <ul class="bullet-points">
+                    <li><strong>Waste Elimination:</strong> Pause $409.81 in zero-conversion terms immediately</li>
+                    <li><strong>Budget Test:</strong> Increase branded budget to $35/day (2x current)</li>
+                    <li><strong>Device Optimization:</strong> Increase mobile bids for branded campaign</li>
+                    <li><strong>Location Adjustment:</strong> Boost bids in Antioch, CA for both campaigns</li>
+                    <li><strong>Security Campaign Audit:</strong> Review and pause high-CPA terms above $60</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Phase 2: Strategic Scaling (Weeks 2-4)</h3>
+                <ul class="bullet-points">
+                    <li><strong>Performance Monitoring:</strong> Track branded campaign capacity at higher budgets</li>
+                    <li><strong>Security Optimization:</strong> Focus on terms under $30 CPA for volume</li>
+                    <li><strong>Budget Reallocation:</strong> Gradually shift budget based on performance data</li>
+                    <li><strong>Geographic Expansion:</strong> Test budget increases in top-performing locations</li>
+                    <li><strong>Device Strategy:</strong> Implement mobile-first bidding approach</li>
+                </ul>
+            </div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">$409.81</span>
+                <div class="stat-label">Monthly Waste to Eliminate</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$35/day</span>
+                <div class="stat-label">Initial Branded Budget Test</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">70/30</span>
+                <div class="stat-label">Target Budget Split</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">4 Weeks</span>
+                <div class="stat-label">Optimization Timeline</div>
+            </div>
+        </div>
+        <div class="success-box">
+            <h3>Expected Outcomes</h3>
+            <p>Implementing these optimizations should reduce blended CPA by 25-35% while increasing total conversion volume by 40-60% through efficient budget reallocation and waste elimination.</p>
+        </div>
+    </div>
+
+    <!-- Slide 9: Implementation Roadmap -->
+    <div class="slide">
+        <div class="slide-header">
+            <img src="https://res.cloudinary.com/dcnabm5nc/image/upload/v1754585626/lead-guru-new-logo-W-450_oyvumx.webp" alt="Lead Guru Logo" class="logo">
+            <div class="slide-number">09</div>
+        </div>
+        <h1>Implementation Roadmap</h1>
+        <div class="subtitle">Tactical execution plan for performance optimization</div>
+        <div class="analysis-box">
+            <h3>🎯 Data-Driven Action Plan</h3>
+            <p>Implementation prioritizes highest-impact optimizations first: waste elimination for immediate ROI improvement, capacity testing for scalable growth, and systematic optimization for sustainable performance gains.</p>
+        </div>
+        <div class="two-column">
+            <div>
+                <h3>Immediate Actions (This Week)</h3>
+                <ul class="bullet-points">
+                    <li>Pause identified $409.81 in wasteful spend across security campaign</li>
+                    <li>Increase branded campaign budget from $17.50 to $35/day</li>
+                    <li>Implement +30% mobile bid adjustments for branded campaign</li>
+                    <li>Boost location bids by +25% in Antioch, CA</li>
+                    <li>Set up enhanced conversion tracking validation</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Strategic Implementation (Weeks 2-4)</h3>
+                <ul class="bullet-points">
+                    <li>Monitor branded campaign performance at increased budget levels</li>
+                    <li>Gradually reallocate budget based on capacity testing results</li>
+                    <li>Optimize security campaign around sub-$30 CPA terms</li>
+                    <li>Implement device-specific landing page testing</li>
+                    <li>Execute geographic performance optimization</li>
+                </ul>
+            </div>
+        </div>
+        <div class="data-table">
+            <table>
+                <tr><th>Week</th><th>Primary Focus</th><th>Key Actions</th><th>Expected Impact</th></tr>
+                <tr><td>1</td><td>Waste Elimination</td><td>Pause zero-conversion terms</td><td>$409.81 monthly savings</td></tr>
+                <tr><td>2</td><td>Branded Scaling</td><td>Test budget capacity</td><td>Volume increase validation</td></tr>
+                <tr><td>3</td><td>Security Optimization</td><td>Term-level improvements</td><td>CPA reduction</td></tr>
+                <tr><td>4</td><td>Strategic Reallocation</td><td>Budget redistribution</td><td>Overall efficiency gains</td></tr>
+            </table>
+        </div>
+        <div class="highlight-box">
+            <h3>Success Metrics & Monitoring</h3>
+            <p><strong>Weekly KPIs:</strong> Track blended CPA reduction, branded campaign volume scaling, security campaign CPA improvement, and overall conversion volume growth. Target: 25% CPA improvement and 40% volume increase within 30 days.</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">25%</span>
+                <div class="stat-label">Target CPA Reduction</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">40%</span>
+                <div class="stat-label">Target Volume Increase</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">$120</span>
+                <div class="stat-label">Optimized Security Budget</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">30 Days</span>
+                <div class="stat-label">Full Implementation Timeline</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
